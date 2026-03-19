@@ -5,7 +5,7 @@ import {getStorage}  from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDfu1bu9sRh5kKjEUzWCJyFXgQMI080WK0",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "homehive-67f9f.firebaseapp.com",
   projectId: "homehive-67f9f",
   storageBucket: "homehive-67f9f.firebasestorage.app",
