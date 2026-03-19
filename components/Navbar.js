@@ -16,7 +16,7 @@ export function Navbar() {
                 <ul className="hidden md:flex md:gap-8 md:text-sm md:font-semibold">
                     <Link href="/"><li>Home</li></Link>
                     <li>Apartments</li>
-                    <li>Add-home</li>
+                    <Link href="/dashboard/add-listing"><li>Add-Listing</li></Link>
                     <Link href="/dashboard/profile"><li>Profile</li></Link>
                 </ul>
                 <Link href="/auth/signin"><div className="hidden md:block">
@@ -31,7 +31,7 @@ export function Navbar() {
                 <ul className="flex flex-col gap-5 text-sm font-semibold">
                     <Link href="/"><li>Home</li></Link>
                     <li>Apartments</li>
-                    <li>Add-home</li>
+                    <Link href="/dashboard/add-listing"><li>Add-Listing</li></Link>
                     <Link href="/dashboard/profile"><li>Profile</li></Link>
                 </ul>
                 <Link href="/auth/signin">

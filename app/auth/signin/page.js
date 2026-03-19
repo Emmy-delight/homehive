@@ -1,3 +1,4 @@
+import { signIn } from "@/auth";
 import { TextField } from "@mui/material";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
@@ -23,7 +24,10 @@ export default function SignIn () {
                  </form>
                  <p className="text-gray-500 text-center mt-2">Or sign up with</p>
                  <div className="flex justify-center gap-4">
-                   <form>
+                   <form action={async ()=>{
+                                   "use server"
+                                await signIn("google");
+                   }}>
                      <button type="submit" className="w-12 h-12 cursor-pointer flex justify-center items-center rounded-md shadow-lg">
                         <FcGoogle className="text-4xl" />
                      </button>
