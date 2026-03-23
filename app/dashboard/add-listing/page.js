@@ -1,7 +1,10 @@
    "use client"
+import { db } from "@/config/firebase.config";
 import { Card, CardContent, CardHeader, TextField } from "@mui/material";
+import { addDoc, collection } from "firebase/firestore";
 import { useFormik } from "formik";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -21,7 +24,26 @@ export default function AddListing () {
            price: "",
            description: "",
       },
-      onSubmit: ()=>{},
+      onSubmit: async (values,{resetForm})=>{
+         try {
+           await addDoc(collection(db,"houses"),{
+               user: session?.user?.id,
+               title: values.title,
+               location: values.location,
+               price: values.price,
+               description: values.description,
+               status: "available",
+               timecreated: new Date(),
+           });
+           alert("Houses added successfully");
+           resetForm();
+         }
+         catch(error) {
+           console.error("error adding house:",error)
+           alert("Failed to list house")
+           resetForm();
+         }
+      },
       validationSchema:schema,
    })
     return(
