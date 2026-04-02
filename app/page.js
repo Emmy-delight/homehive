@@ -1,7 +1,14 @@
 "use client"
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+   const {data : session} =  useSession();
+   
+    if (!session?.user) {
+       redirect("auth/signin");
+    };
    return(
     <main>
        <div className="bg-[url('/image1.png')] h-[40vh] bg-contain   md:bg-[url('/image1.png')] md:h-[50vh] md:bg-no-repeat md:bg-contain  lg:bg-[url('/image1.png')] lg:h-[80vh] lg:bg-no-repeat lg:bg-cover ">

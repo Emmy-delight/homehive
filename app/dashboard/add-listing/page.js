@@ -1,6 +1,6 @@
    "use client"
 import { db } from "@/config/firebase.config";
-import { Card, CardContent, CardHeader, TextField } from "@mui/material";
+import { Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { addDoc, collection } from "firebase/firestore";
 import { useFormik } from "formik";
 import { useSession } from "next-auth/react";
@@ -16,7 +16,12 @@ const schema = yup.object().shape({
 
 export default function AddListing () {
    const {data: session} = useSession();
-   console.log(session);
+   const [loading,setLoading] = useState(false);
+   const[open,setOpen] =useState(false);
+
+   const handleClose = ()=>{
+       setOpen(false);
+   };   
    const {handleSubmit,handleChange,values,errors,touched} = useFormik({
       initialValues: {
            title: "",
@@ -26,6 +31,7 @@ export default function AddListing () {
       },
       onSubmit: async (values,{resetForm})=>{
          try {
+             setLoading(true)
            await addDoc(collection(db,"houses"),{
                user: session?.user?.id,
                title: values.title,
@@ -35,13 +41,15 @@ export default function AddListing () {
                status: "available",
                timecreated: new Date(),
            });
-           alert("Houses added successfully");
+            setOpen(true)
            resetForm();
+           setLoading(false)
          }
          catch(error) {
-           console.error("error adding house:",error)
-           alert("Failed to list house")
-           resetForm();
+            console.error("error adding house:",error)
+            alert("Failed to list house")
+            resetForm();
+            setLoading(false)
          }
       },
       validationSchema:schema,
@@ -113,10 +121,20 @@ export default function AddListing () {
                            
                            }</span>: null}
                        </div>
-                       <button type="submit" className="w-full h-10 bg-blue-500 rounded-md shadow flex justify-center items-center text-white cursor-pointer font-semibold hover:opacity-75">Add Listing</button>
+                       <button type="submit" className="w-full h-10 bg-blue-500 rounded-md shadow flex justify-center items-center text-white cursor-pointer font-semibold hover:opacity-75">{loading ? "Adding..." : "Add Listing"}</button>
                     </form>
                  </CardContent>
             </Card>
+
+            <Dialog open={open} onClose={handleClose}>
+               <DialogTitle>Success</DialogTitle>
+               <DialogContent>
+                   <Typography>House was uploaded Sucessfully</Typography>
+               </DialogContent>
+               <DialogActions>
+                   <Button onClick={handleClose} variant="contained" color="primary">Close</Button>
+               </DialogActions>
+            </Dialog>
 
         </main>
     )

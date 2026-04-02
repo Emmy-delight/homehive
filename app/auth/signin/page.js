@@ -1,9 +1,14 @@
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { TextField } from "@mui/material";
+import { redirect } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
 
-export default function SignIn () {
+export default async  function SignIn () {
+   const session = await auth();
+      if (session?.user) {
+           redirect("/dashboard/apartments")
+      }
     return (
         <main className="min-h-screen">
             <div className="bg-[url(/bg.jpg)] h-screen bg-no-repeat bg-cover flex justify-center px-5 py-10">
